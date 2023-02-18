@@ -1,7 +1,8 @@
 <aura:component
         implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId"
         access="global">
-    <h1>Hello!</h1>
+    <p>Двойной клик по любому столбцу таблицы откроет режим, где поля будут отображены элементами, соответвующими их типу.</p>
+    <a target="_blank" href = "https://github.com/Very-Sad-Owl/ContactManagerLwc">Код lwc компонента, представляющего таблицу</a>
 
     <aura:attribute name="searchKeyword" type="String" description="search input"/>
     <aura:attribute name="requestedSearchKeyword" type="String" description="search request"/>
@@ -27,7 +28,6 @@
                           variant="brand"
                           label="Reset"/>
     </form>
-
 
     <c:lwcTable searchWord="{!v.requestedSearchKeyword}"
                 pageSize="{!v.pageSize}"

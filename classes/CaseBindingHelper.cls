@@ -49,18 +49,24 @@ public class CaseBindingHelper {
     }
 
     public static String definePriority(String contactLvl) {
-        switch on ContactLevel.valueOf(contactLvl.capitalize()) {
-            when PRIMARY {
-                return String.valueOf(CasePriority.HIGH).toLowerCase();
+        try {
+            switch on ContactLevel.valueOf(contactLvl.capitalize()) {
+                when PRIMARY {
+                    return String.valueOf(CasePriority.HIGH).toLowerCase();
+                }
+                when SECONDARY {
+                    return String.valueOf(CasePriority.MEDIUM).toLowerCase();
+                }
+                when TERTIARY {
+                    return String.valueOf(CasePriority.LOW).toLowerCase();
+                }
+                when else {
+                    return String.valueOf(CasePriority.MEDIUM).toLowerCase();
+                }
             }
-            when SECONDARY {
-                return String.valueOf(CasePriority.MEDIUM).toLowerCase();
-            }
-            when TERTIARY {
-                return String.valueOf(CasePriority.LOW).toLowerCase();
-            }
+        } catch (NoSuchElementException e) {
+            return String.valueOf(CasePriority.MEDIUM).toLowerCase();
         }
-        return '';
     }
 
 }

@@ -13,7 +13,7 @@ export default class LookupLwc extends LightningElement {
     @api iconName;
     @api labelName;
     @api readOnly = false;
-    @api filter = '';
+    // @api filter = '';
     @api showLabel = false;
     @api uniqueKey;
     objLabelName;
@@ -111,7 +111,7 @@ export default class LookupLwc extends LightningElement {
     }
     //Used for creating Record End
 
-    @wire(lookUp, {searchTerm : '$searchTerm', myObject : '$objName', filter : '$filter'})
+    @wire(lookUp, {searchTerm : '$searchTerm', myObject : '$objName'})
     wiredRecords({ error, data }) {
         if (data) {
             this.record = data;

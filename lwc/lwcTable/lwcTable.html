@@ -53,8 +53,8 @@
                 <tbody>
                 <template for:each={currentData} for:item="item" for:index="indexVar">
                     <tr key={item.key} class="slds-hint-parent" ondblclick={onDoubleClickEdit}>
-                        <td class="slds-size_3-of-10" data-label="Prospecting">
-                            <div title="Prospecting">
+                        <td class="slds-size_3-of-10">
+                            <div title="contact-name-row">
                                 <template if:false={isEdited}>
                                     <lightning-formatted-url value={item.recordUrl} label={item.Name}
                                                              target="_self"></lightning-formatted-url>
@@ -69,8 +69,8 @@
                         <td class="slds-size_3-of-10">
                             <a>{item.Email}</a>
                         </td>
-                        <td class="slds-size_3-of-10" data-label="Prospecting">
-                            <div title="Prospecting">
+                        <td class="slds-size_3-of-10">
+                            <div title="contact-level-row">
                                 <template if:false={isEdited}>{item.Contact_Level__c}</template>
                                 <template if:true={isEdited}>
                                     <c-picklist
@@ -84,8 +84,8 @@
                                 </template>
                             </div>
                         </td>
-                        <td class="slds-size_3-of-10" data-label="Prospecting">
-                            <div title="Prospecting">
+                        <td class="slds-size_3-of-10">
+                            <div title="account-row">
                                 <template if:false={isEdited} if:true={item.AccountId}>
                                     <lightning-formatted-url value={item.accountUrl} label={item.accountName}
                                                              target="_self"></lightning-formatted-url>
@@ -103,8 +103,8 @@
                                 </template>
                             </div>
                         </td>
-                        <td class="slds-size_3-of-10" data-label="Prospecting">
-                            <div title="Prospecting">
+                        <td class="slds-size_3-of-10">
+                            <div title="owner-row">
                                 <template if:false={isEdited} if:true={item.OwnerId}>
                                     <lightning-formatted-url value={item.ownerUrl} label={item.ownerName}
                                                              target="_self"></lightning-formatted-url>
@@ -122,8 +122,8 @@
                                 </template>
                             </div>
                         </td>
-                        <td class="slds-size_3-of-10" data-label="Prospecting">
-                            <div title="Prospecting">
+                        <td class="slds-size_3-of-10">
+                            <div title="created-by-row">
                                 <template if:false={isEdited} if:true={item.CreatedBy.Id}>
                                     <lightning-formatted-url value={item.createdByUrl} label={item.createdByName}
                                                              target="_self"></lightning-formatted-url>
@@ -141,8 +141,8 @@
                                 </template>
                             </div>
                         </td>
-                        <td class="slds-size_3-of-10" data-label="Prospecting">
-                            <div title="Prospecting">
+                        <td class="slds-size_3-of-10">
+                            <div title="created-date-row">
                                 <template if:false={isEdited}>
                                     <lightning-formatted-date-time
                                             value={item.CreatedDate}
@@ -163,7 +163,7 @@
                                 </template>
                             </div>
                         </td>
-                        <td class="slds-size_1-of-10" data-label="Prospecting">
+                        <td class="slds-size_1-of-10">
                             <a name={indexVar} data-id={item.Id} onclick={remove}>
                                 <lightning-icon icon-name="utility:delete" alternative-text="delete"
                                                 size="small"></lightning-icon>

@@ -25,20 +25,13 @@ public with sharing class LwcTableController {
 
     @AuraEnabled
     public static String deleteContact(String toDeleteId) {
-        Database.DeleteResult dr = Database.delete(toDeleteId);
-            if (dr.isSuccess()) {
-                System.debug('Successfully deleted account with ID: ' + dr.getId());
-                return 'success';
-            }
-            else {
-                List<String> errMessages = new List<String>();
-                for(Database.Error err : dr.getErrors()) {
-                    System.debug('The following error has occurred.');
-                    System.debug(err.getStatusCode() + ': ' + err.getMessage());
-                    System.debug('Account fields that affected this error: ' + err.getFields());
-                    errMessages.add(err.getStatusCode() + ': ' + err.getMessage());
-                }
-                return errMessages[0];
+        Database.DeleteResult dr;
+        try {
+            dr = Database.delete(toDeleteId);
+            System.debug('Successfully deleted account with ID: ' + dr.getId());
+            return 'success';
+        } catch (Exception e) {
+            return e.getMessage();
         }
     }
 
