@@ -1,0 +1,52 @@
+<aura:component
+        implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId"
+        access="global">
+    <h1>Hello!</h1>
+
+    <aura:attribute name="searchKeyword" type="String" description="search input"/>
+    <aura:attribute name="requestedSearchKeyword" type="String" description="search request"/>
+    <aura:attribute name="pageNumber" type="Integer" default="1"/>
+    <aura:attribute name="pageSize" type="Integer" default="10"/>
+    <aura:attribute name="dataSize" type="Integer"/>
+    <aura:attribute name="dataOnPage" type="Integer"/>
+    <aura:attribute name="isLastPage" type="Boolean" default="false"/>
+
+    <form class="slds-form-stacked">
+        <lightning:input value="{!v.searchKeyword}"
+                         required="true"
+                         placeholder="search Products.."
+                         aura:id="searchField"
+                         label="Enter Value"/>
+        <lightning:button onclick="{!c.search}"
+                          class="slds-m-top--medium"
+                          variant="brand"
+                          label="Search"
+                          iconName="utility:search"/>
+        <lightning:button onclick="{!c.reset}"
+                          class="slds-m-top--medium"
+                          variant="brand"
+                          label="Reset"/>
+    </form>
+
+
+    <c:lwcTable searchWord="{!v.requestedSearchKeyword}"
+                pageSize="{!v.pageSize}"
+                pageNumber="{!v.pageNumber}"
+                oncontentChanged="{!c.setPaginationData}"
+                aura:id="extendedDataTable"></c:lwcTable>
+
+    <div class="slds-clearfix">
+        <div class="slds-page-header" role="banner">
+            <div class="slds-float_right">
+                <lightning:button label="Prev" iconName="utility:chevronleft" iconPosition="left"
+                                  onclick="{!c.handlePrev}" disabled="{! v.pageNumber == 1}"/>
+                <lightning:button label="Next" iconName="utility:chevronright" iconPosition="right"
+                                  disabled="{!v.isLastPage}" onclick="{!c.handleNext}"/>
+            </div>
+            <p class="slds-page-header__title">Page {!v.pageNumber} | Showing records
+                {!v.isLastPage ? v.pageSize * (v.pageNumber - 1) + v.dataOnPage : v.pageSize * v.pageNumber}
+                \ {!v.dataSize}</p>
+        </div>
+    </div>
+
+</aura:component>

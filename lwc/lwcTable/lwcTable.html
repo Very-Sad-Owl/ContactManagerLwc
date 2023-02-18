@@ -1,0 +1,178 @@
+<!--
+ - Created by olgam on 2/15/2023.
+ -->
+
+<!-- Lwc Table -->
+<template>
+
+    <lightning-card>
+        <div class="slds-p-around_x-small">
+            <lightning-button
+                    label="Add Contact"
+                    title="Add Contact"
+                    onclick={openModal}
+                    icon-name="utility:add">
+            </lightning-button>
+        </div>
+        <div class="slds-p-around_x-small">
+            <template if:true={showModal}>
+                <c-create-contact-popup contact-fields={contactFields} oninserted={hideFormOnSuccess}
+                                        oncanceled={hideFormOnCancel}></c-create-contact-popup>
+            </template>
+        </div>
+        <div class="slds-p-around_x-small">
+            <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                <thead>
+                <tr class="">
+                    <th class="slds-size_3-of-10" scope="col" data-id="Name" onclick={sort}>
+                        <div class="slds-truncate" title="Contact Name">Contact Name</div>
+                    </th>
+                    <th class="slds-size_3-of-10" scope="col" data-id="Email" onclick={sort}>
+                        <div class="slds-truncate" title="Email">Email</div>
+                    </th>
+                    <th class="slds-size_3-of-10" scope="col" data-id="Contact_Level__c" onclick={sort}>
+                        <div class="slds-truncate" title="Contact Level">Contact Level</div>
+                    </th>
+                    <th class="slds-size_3-of-10" scope="col" data-id="Account" onclick={sort}>
+                        <div class="slds-truncate" title="Account">Account</div>
+                    </th>
+                    <th class="slds-size_3-of-10" scope="col" data-id="Owner" onclick={sort}>
+                        <div class="slds-truncate" title="Owner">Owner</div>
+                    </th>
+                    <th class="slds-size_3-of-10" scope="col" data-id="CreatedBy" onclick={sort}>
+                        <div class="slds-truncate" title="Created By">Created By</div>
+                    </th>
+                    <th class="slds-size_3-of-10" scope="col" data-id="CreatedDate" onclick={sort}>
+                        <div class="slds-truncate" title="Creation Date">Creation Date</div>
+                    </th>
+                    <th class="slds-size_1-of-10" scope="col">
+                        <div class="slds-truncate" title="Action">Action</div>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <template for:each={currentData} for:item="item" for:index="indexVar">
+                    <tr key={item.key} class="slds-hint-parent" ondblclick={onDoubleClickEdit}>
+                        <td class="slds-size_3-of-10" data-label="Prospecting">
+                            <div title="Prospecting">
+                                <template if:false={isEdited}>
+                                    <lightning-formatted-url value={item.recordUrl} label={item.Name}
+                                                             target="_self"></lightning-formatted-url>
+                                </template>
+                                <template if:true={isEdited}>
+                                    <lightning-input key={item.key} data-id={item.Id} name="input1" label="Name"
+                                                     value={item.Name} variant="label-hidden"
+                                                     onchange={handleNameChange}></lightning-input>
+                                </template>
+                            </div>
+                        </td>
+                        <td class="slds-size_3-of-10">
+                            <a>{item.Email}</a>
+                        </td>
+                        <td class="slds-size_3-of-10" data-label="Prospecting">
+                            <div title="Prospecting">
+                                <template if:false={isEdited}>{item.Contact_Level__c}</template>
+                                <template if:true={isEdited}>
+                                    <c-picklist
+                                            unique-key={item.Id}
+                                            object-api-name="Contact"
+                                            selected-value={item.Contact_Level__c}
+                                            pick-listfield-api-name="Contact_Level__c"
+                                            variant="label-hidden"
+                                            onpicklistchange={handlePicklistChange}>
+                                    </c-picklist>
+                                </template>
+                            </div>
+                        </td>
+                        <td class="slds-size_3-of-10" data-label="Prospecting">
+                            <div title="Prospecting">
+                                <template if:false={isEdited} if:true={item.AccountId}>
+                                    <lightning-formatted-url value={item.accountUrl} label={item.accountName}
+                                                             target="_self"></lightning-formatted-url>
+                                </template>
+                                <template if:true={isEdited}>
+                                    <c-look-up
+                                            unique-key={item.Id}
+                                            value-id={item.AccountId}
+                                            obj-name="Account"
+                                            icon-name="custom:custom85"
+                                            label-name="Account"
+                                            onvalueselect={handleSelection}
+                                            create-record=true>
+                                    </c-look-up>
+                                </template>
+                            </div>
+                        </td>
+                        <td class="slds-size_3-of-10" data-label="Prospecting">
+                            <div title="Prospecting">
+                                <template if:false={isEdited} if:true={item.OwnerId}>
+                                    <lightning-formatted-url value={item.ownerUrl} label={item.ownerName}
+                                                             target="_self"></lightning-formatted-url>
+                                </template>
+                                <template if:true={isEdited}>
+                                    <c-look-up
+                                            unique-key={item.Id}
+                                            value-id={item.OwnerId}
+                                            obj-name="User"
+                                            icon-name="custom:custom85"
+                                            label-name="Owner"
+                                            onvalueselect={handleSelection}
+                                            create-record=true>
+                                    </c-look-up>
+                                </template>
+                            </div>
+                        </td>
+                        <td class="slds-size_3-of-10" data-label="Prospecting">
+                            <div title="Prospecting">
+                                <template if:false={isEdited} if:true={item.CreatedBy.Id}>
+                                    <lightning-formatted-url value={item.createdByUrl} label={item.createdByName}
+                                                             target="_self"></lightning-formatted-url>
+                                </template>
+                                <template if:true={isEdited}>
+                                    <c-look-up
+                                            unique-key={item.Id}
+                                            value-id={item.CreatedBy.Id}
+                                            obj-name="User"
+                                            icon-name="custom:custom85"
+                                            label-name="Created By"
+                                            onvalueselect={handleSelection}
+                                            create-record=true>
+                                    </c-look-up>
+                                </template>
+                            </div>
+                        </td>
+                        <td class="slds-size_3-of-10" data-label="Prospecting">
+                            <div title="Prospecting">
+                                <template if:false={isEdited}>
+                                    <lightning-formatted-date-time
+                                            value={item.CreatedDate}
+                                            year="2-digit"
+                                            month="short"
+                                            day="2-digit"
+                                            weekday="long"
+                                            time-zone="UTC"
+                                            time-zone-name="short"
+                                    >
+                                    </lightning-formatted-date-time>
+                                </template>
+                                <template if:true={isEdited}>
+                                    <lightning-input type="date" key={item.key} data-id={item.Id} name="input1"
+                                                     label="Created Date" value={item.CreatedDate}
+                                                     variant="label-hidden"
+                                                     onchange={handleNameChange}></lightning-input>
+                                </template>
+                            </div>
+                        </td>
+                        <td class="slds-size_1-of-10" data-label="Prospecting">
+                            <a name={indexVar} data-id={item.Id} onclick={remove}>
+                                <lightning-icon icon-name="utility:delete" alternative-text="delete"
+                                                size="small"></lightning-icon>
+                            </a>
+                        </td>
+                    </tr>
+                </template>
+                </tbody>
+            </table>
+        </div>
+    </lightning-card>
+</template>

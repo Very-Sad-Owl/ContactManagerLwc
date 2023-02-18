@@ -1,0 +1,17 @@
+<!--
+ - Created by olgam on 2/16/2023.
+ -->
+
+<!-- Create Contact Popup -->
+<template>
+        <div if:true={errors} class="slds-notify slds-notify_alert slds-alert_error">
+            {errors}
+        </div>
+        <lightning-record-form class="slds-form-element"
+                object-api-name="Contact"
+                fields={contactFields}
+                onsuccess={closePopupSuccess}
+                columns="1"
+                oncancel={closePopup}>
+        </lightning-record-form>
+</template>
